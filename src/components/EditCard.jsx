@@ -49,7 +49,7 @@ export default function EditCard() {
 
 <div className="container">
             <header>
-                <Link to="/"><Arrow /></Link>
+                <Link to="/card-list"><Arrow /></Link>
                 <div className='page-heading'>
                     <h2 className="heading-sm">Season’s Greetings</h2>
                     <p className="desc-sm">Style your message</p>
