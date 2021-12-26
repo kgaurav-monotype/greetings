@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import Arrow from './Arrow';
 
-import logo from '../images/M-logo.jpg';
+import logo from '../images/M-logo.png';
 import artwork from '../images/bg.png';
 import Card from './Card';
 

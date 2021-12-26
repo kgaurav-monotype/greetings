@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import { Link } from "react-router-dom";
 import Arrow from './Arrow';
 
-import logo from '../images/M-logo.jpg';
+import logo from '../images/M-logo.png';
 import artwork from '../images/bg.png';
 
 import Card from './Card';
@@ -14,7 +14,7 @@ export default function EditCard() {
     const [msg, setMsg] = useState("To a Brighter Futura.");
 
     const updateMessage = (e)=>{
-        setMsg(e.target.value); 
+        setMsg(e.target.value);
     }
 
     const selectMessage = (e)=>{
@@ -58,7 +58,7 @@ export default function EditCard() {
             <div id="canvas">
                 <Card editUrl="/edit-card" logo={logo} artwork={artwork} text={msg}/>
             </div>
-            <textarea maxLength="50" className='text-box' type="text" onChange={updateMessage} onClick={selectMessage} value={msg} name="text" aria-label='text'  cols="30" rows="5"></textarea>
+            <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage} onClick={selectMessage} value={msg} name="text" aria-label='text'  cols="30" rows="5"></textarea>
             <button className="btn btn-block" onClick={share}>Send</button>
         </div>
     );

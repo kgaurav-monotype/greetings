@@ -108,7 +108,7 @@ header {
   width: 328px;
   min-height: 380px;
   background-color: #EDF2FF;
-  border-radius: 24px;
+  border-radius: 16px;
   position: relative;
 }
 
@@ -130,6 +130,8 @@ header {
   position: absolute;
   left: 26px;
   top: 0;
+  width: 24px;
+  height: auto;
 }
 .text {
   font-family: 'FuturaHeavy';
@@ -142,6 +144,8 @@ header {
   position: absolute;
   left: 0;
   bottom: 0;
+  width: 100%;
+  height: auto;
 }
 
 .text-box, .text-box:focus-visible, .text-box:focus {
