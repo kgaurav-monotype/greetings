@@ -45,7 +45,7 @@ export default function EditCard(node, child) {
       });
     } else {
       console.log(`Your system doesn't support sharing files.`);
-      setFinalGif(true);
+      setFinalGif(null);
     }
   }
 
