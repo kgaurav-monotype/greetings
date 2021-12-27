@@ -6,7 +6,7 @@ import logo from '../images/small-m.gif';
 import artwork from '../images/bg.png';
 
 import logo2 from '../images/Red-Sox.png';
-import artwork2 from '../images/sox-anim.gif';
+//import artwork2 from '../images/sox-anim.gif';
 
 import Card from './Card';
 import Card2 from './Card2';
@@ -28,7 +28,7 @@ export default function CardList() {
                 </header>
                 <div className='card-container'>
                     <Card editUrl="/edit-card" changeText={true} logo={logo} artwork={artwork} text={msg} showLogo={true}/>
-                    <Card2 editUrl="/edit-card" changeText={true} logo={logo2} text={msg2} showLogo={true}/>
+                    <Card2 editUrl="/edit-card2" changeText={true} logo={logo2} text={msg2} showLogo={true}/>
                 </div>
             </div>
     )
