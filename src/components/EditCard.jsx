@@ -72,7 +72,7 @@ export default function EditCard(node, child) {
 
     const gif = new window.GIF({
       workers: 4,
-      quality: 0.01
+      quality: 2
     });
     const ctx = canvas.getContext("2d");
     const nCanvas = document.createElement("canvas");
@@ -85,8 +85,9 @@ export default function EditCard(node, child) {
         img.width * devicePixelRatio,
         img.height * devicePixelRatio);
       ctx.putImageData(nCtx.getImageData(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio), 36, 0);
-      nCtx.clearRect(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio);
       gif.addFrame(canvas, {delay: 16 * i, copy: true});
+
+      nCtx.clearRect(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio);
     }
 
     // document.body.appendChild(canvas);
