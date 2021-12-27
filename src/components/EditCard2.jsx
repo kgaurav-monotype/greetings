@@ -6,6 +6,7 @@ import { getImgFromArr } from 'array-to-image';
 
 import Arrow from './Arrow';
 import logo from '../images/Red-Sox.png';
+import artwork from '../images/sox-anim.gif';
 
 import Card2 from './Card2';
 
@@ -112,10 +113,10 @@ export default function EditCard2(node, child) {
         </div>
       </header>
       <div id="canvasShown">
-        <Card2 editUrl="/edit-card2" logo={logo} text={msg} showLogo={true}/>
+        <Card2 editUrl="/edit-card2" logo={logo} artwork={artwork} text={msg} showLogo={true}/>
       </div>
       <div id="canvas" style={{position: "absolute", left: "-1000px", top: "-1000px"}}>
-        <Card2 editUrl="/edit-card2" logo={logo} text={msg} showLogo={false}/>
+        <Card2 editUrl="/edit-card2" logo={logo} artwork={artwork} text={msg} showLogo={false}/>
       </div>
       <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage}
                 onClick={selectMessage} value={msg} name="text" aria-label='text' cols="30" rows="5"></textarea>
