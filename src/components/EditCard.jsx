@@ -40,7 +40,6 @@ export default function EditCard(node, child) {
       })
         .then(() => console.log('Share was successful.'))
         .catch((error) => console.log('Sharing failed', error)).finally(() => {
-            
         setFinalGif(null);
       });
     } else {
@@ -76,7 +75,6 @@ export default function EditCard(node, child) {
     }
 
     const valueReturned = await new Promise((resolve) => {
-
       gif.on('finished', function (b) {
         // window.open(URL.createObjectURL(b));
         // return;
@@ -113,6 +111,3 @@ export default function EditCard(node, child) {
     </div>
   );
 }
-
-// const origImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-// ctx.putImageData(origImgData, 0, 0);
