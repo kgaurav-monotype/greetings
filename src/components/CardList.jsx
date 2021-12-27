@@ -28,7 +28,7 @@ export default function CardList() {
                 </header>
                 <div className='card-container'>
                     <Card editUrl="/edit-card" changeText={true} logo={logo} artwork={artwork} text={msg} showLogo={true}/>
-                    <Card2 editUrl="/edit-card" changeText={true} logo={logo2} artwork={artwork2} text={msg2} showLogo={true}/>
+                    <Card2 editUrl="/edit-card" changeText={true} logo={logo2} text={msg2} showLogo={true}/>
                 </div>
             </div>
     )
