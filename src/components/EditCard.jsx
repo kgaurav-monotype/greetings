@@ -12,6 +12,7 @@ import Card from './Card';
 export default function EditCard(node, child) {
   const [msg, setMsg] = useState("To a Brighter Futura.");
   const [finalGif, setFinalGif] = useState(null);
+  const [disable, setDisable] = useState(false);
 
   const updateMessage = (e) => {
     setMsg(e.target.value);
@@ -39,15 +40,17 @@ export default function EditCard(node, child) {
       })
         .then(() => console.log('Share was successful.'))
         .catch((error) => console.log('Sharing failed', error)).finally(() => {
+            
         setFinalGif(null);
       });
     } else {
       console.log(`Your system doesn't support sharing files.`);
-      setFinalGif(null);
+      setFinalGif(true);
     }
   }
 
   async function prepare() {
+    setDisable(true);
     const gifUrl = document.querySelector('.logo').getAttribute('src');
     const promisedGif = await fetch(gifUrl)
       .then(resp => resp.arrayBuffer())
@@ -74,11 +77,13 @@ export default function EditCard(node, child) {
     }
 
     const valueReturned = await new Promise((resolve) => {
+
       gif.on('finished', function (b) {
         // window.open(URL.createObjectURL(b));
         // return;
 
         console.log('finished gif encoding');
+        setDisable(false);
         resolve(b);
       });
 
@@ -105,7 +110,7 @@ export default function EditCard(node, child) {
       </div>
       <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage}
                 onClick={selectMessage} value={msg} name="text" aria-label='text' cols="30" rows="5"></textarea>
-      {!finalGif ? <button className="btn btn-block" onClick={prepare}>Prepare</button> : <button className="btn btn-block" onClick={share}>Share</button>}
+      {!finalGif ? <button disabled={disable} className="btn btn-block" onClick={prepare}>Prepare {disable ? <div className="loader"></div> : null}</button> : <button className="btn btn-block" onClick={share}>Share</button>}
     </div>
   );
 }
