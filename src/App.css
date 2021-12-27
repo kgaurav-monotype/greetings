@@ -99,9 +99,8 @@ header {
 }
 
 .card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
+  display: grid;
+  grid-gap: 30px;
 }
 
 .card {
@@ -226,4 +225,49 @@ header {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+/* card 2 */
+
+.card2 {
+  width: 328px;
+  min-height: 380px;
+  position: relative;
+  background-color: #C62033;
+  border-radius: 0;
+  padding: 35px 30px;
+}
+
+.card2 .inner {
+  border: 2px dashed #FFFFFF;
+  border-radius: 16px;
+  position: relative;
+}
+
+.card2 .inner > .text {
+  font-family: 'LetteriaProSans';
+  font-size: 46px;
+  line-height: 42px;
+  padding: 120px 25px 120px 25px;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.card2 .inner > .logo {
+  position: absolute;
+  left: -22px;
+  top: -18px;
+  width: 60px;
+  height: 60px;
+  border: 10px solid #c62033;
+  border-radius: 50%;
+}
+
+.card2 .inner > .artwork {
+  position: absolute;
+  left: 50%;
+  bottom: -40px;
+  width: 80px;
+  height: auto;
+  transform: translateX(-50%);
 }
