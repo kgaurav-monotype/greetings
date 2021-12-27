@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 import Arrow from './Arrow';
 
-import logo from '../images/M-logo.png';
+import logo from '../images/small-m.gif';
 import artwork from '../images/bg.png';
 import Card from './Card';
 
@@ -21,7 +21,7 @@ export default function CardList() {
                     </div>
                 </header>
                 <div className='card-container'>
-                    <Card editUrl="/edit-card" changeText={true} logo={logo} artwork={artwork} text={msg}/>
+                    <Card editUrl="/edit-card" changeText={true} logo={logo} artwork={artwork} text={msg} showLogo={true}/>
                 </div>
             </div>
     )

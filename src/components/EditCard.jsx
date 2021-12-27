@@ -12,6 +12,7 @@ import Card from './Card';
 export default function EditCard(node, child) {
   const [msg, setMsg] = useState("To a Brighter Futura.");
   const [finalGif, setFinalGif] = useState(null);
+  const [disable, setDisable] = useState(false);
 
   const updateMessage = (e) => {
     setMsg(e.target.value);
@@ -48,6 +49,7 @@ export default function EditCard(node, child) {
   }
 
   async function prepare() {
+    setDisable(true);
     const gifUrl = document.querySelector('.logo').getAttribute('src');
     const promisedGif = await fetch(gifUrl)
       .then(resp => resp.arrayBuffer())
@@ -57,6 +59,7 @@ export default function EditCard(node, child) {
     const content = document.getElementById('canvas');
     let canvas = await html2canvas(content, {
       backgroundColor: null,
+      scale: 1,
     });
     let dataUrl = canvas.toDataURL();
     let blob = await (await fetch(dataUrl)).blob();
@@ -65,10 +68,8 @@ export default function EditCard(node, child) {
       workers: 4,
       quality: 5
     });
-
+    const ctx = canvas.getContext("2d");
     for (let i = 0; i < promisedGif.length; i++) {
-      const ctx = canvas.getContext("2d");
-
       ctx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 36, 0);
       gif.addFrame(canvas, {delay: 16 * i, copy: true});
     }
@@ -79,6 +80,7 @@ export default function EditCard(node, child) {
         // return;
 
         console.log('finished gif encoding');
+        setDisable(false);
         resolve(b);
       });
 
@@ -105,10 +107,7 @@ export default function EditCard(node, child) {
       </div>
       <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage}
                 onClick={selectMessage} value={msg} name="text" aria-label='text' cols="30" rows="5"></textarea>
-      {!finalGif ? <button className="btn btn-block" onClick={prepare}>Prepare</button> : <button className="btn btn-block" onClick={share}>Share</button>}
+      {!finalGif ? <button disabled={disable} className="btn btn-block" onClick={prepare}>Prepare {disable ? <div className="loader"></div> : null}</button> : <button className="btn btn-block" onClick={share}>Share</button>}
     </div>
   );
 }
-
-// const origImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-// ctx.putImageData(origImgData, 0, 0);
