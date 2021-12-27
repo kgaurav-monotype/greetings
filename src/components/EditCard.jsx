@@ -79,15 +79,10 @@ export default function EditCard(node, child) {
     const nCtx = nCanvas.getContext("2d");
 
     for (let i = 0; i < promisedGif.length; i++) {
-      const img = getImgFromArr(promisedGif[i].patch);
-
-      nCtx.drawImage(img, 0, 0,
-        img.width * devicePixelRatio,
-        img.height * devicePixelRatio);
-      ctx.putImageData(nCtx.getImageData(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio), 36, 0);
+      nCtx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 0, 0);
+      ctx.putImageData(nCtx.getImageData(0, 0, 24, 24), 36, 0);
+      nCtx.clearRect(0, 0, 24, 24);
       gif.addFrame(canvas, {delay: 16 * i, copy: true});
-
-      nCtx.clearRect(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio);
     }
 
     // document.body.appendChild(canvas);
@@ -129,3 +124,12 @@ export default function EditCard(node, child) {
     </div>
   );
 }
+
+// const img = getImgFromArr(promisedGif[i].patch);
+//
+// nCtx.drawImage(img, 0, 0,
+//   img.width * devicePixelRatio,
+//   img.height * devicePixelRatio);
+// ctx.putImageData(nCtx.getImageData(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio), 36, 0);
+// gif.addFrame(canvas, {delay: 16 * i, copy: true});
+// nCtx.clearRect(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio);
