@@ -263,7 +263,7 @@ header {
   border-radius: 50%;
 }
 
-.card2 .inner > .artwork {
+.card2 .inner > .artwork, .card2 .inner > .lf-player-container .artwork {
   position: absolute;
   left: 50%;
   bottom: -40px;
@@ -271,3 +271,4 @@ header {
   height: auto;
   transform: translateX(-50%);
 }
+
