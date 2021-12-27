@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import html2canvas from 'html2canvas';
 import {Link} from "react-router-dom";
-import {decompressFrames, parseGIF} from 'gifuct-js'
+import {decompressFrames, parseGIF} from 'gifuct-js';
+import { getImgFromArr } from 'array-to-image';
 
 import Arrow from './Arrow';
 import logo from '../images/small-m.gif';
@@ -50,7 +51,12 @@ export default function EditCard(node, child) {
 
   async function prepare() {
     setDisable(true);
-    const gifUrl = document.querySelector('.logo').getAttribute('src');
+
+    const { devicePixelRatio } = window;
+    const logoGif = document.querySelector('.logo');
+    const gifUrl = logoGif.getAttribute('src');
+    const logoWidth = logoGif.clientWidth;
+    const logoHeight = logoGif.clientHeight;
     const promisedGif = await fetch(gifUrl)
       .then(resp => resp.arrayBuffer())
       .then(buff => parseGIF(buff))
@@ -59,20 +65,31 @@ export default function EditCard(node, child) {
     const content = document.getElementById('canvas');
     let canvas = await html2canvas(content, {
       backgroundColor: null,
-      scale: 1,
+      // scale: 2, window.devicePixelRatio
     });
     let dataUrl = canvas.toDataURL();
     let blob = await (await fetch(dataUrl)).blob();
 
     const gif = new window.GIF({
       workers: 4,
-      quality: 5
+      quality: 0.01
     });
     const ctx = canvas.getContext("2d");
+    const nCanvas = document.createElement("canvas");
+    const nCtx = nCanvas.getContext("2d");
+
     for (let i = 0; i < promisedGif.length; i++) {
-      ctx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 36, 0);
+      const img = getImgFromArr(promisedGif[i].patch);
+
+      nCtx.drawImage(img, 0, 0,
+        img.width * devicePixelRatio,
+        img.height * devicePixelRatio);
+      ctx.putImageData(nCtx.getImageData(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio), 36, 0);
+      nCtx.clearRect(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio);
       gif.addFrame(canvas, {delay: 16 * i, copy: true});
     }
+
+    // document.body.appendChild(canvas);
 
     const valueReturned = await new Promise((resolve) => {
       gif.on('finished', function (b) {
