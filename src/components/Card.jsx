@@ -12,7 +12,6 @@ export default function Card({logo, artwork, text, changeText, editUrl, showLogo
                     <img className="artwork" src={artwork} alt="" />
                     {
                     changeText && <span className='edit-text'>Customise &nbsp;<Edit/></span>
-
                     }
                 </Link>
             </div>
