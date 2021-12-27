@@ -53,7 +53,7 @@ export default function EditCard2(node, child) {
     setDisable(true);
 
     const { devicePixelRatio } = window;
-    const logoGif = document.querySelector('.logo');
+    const logoGif = document.querySelector('.artwork');
     const gifUrl = logoGif.getAttribute('src');
     const logoWidth = logoGif.clientWidth;
     const logoHeight = logoGif.clientHeight;
@@ -75,14 +75,27 @@ export default function EditCard2(node, child) {
       quality: 2
     });
     const ctx = canvas.getContext("2d");
-    const nCanvas = document.createElement("canvas");
-    const nCtx = nCanvas.getContext("2d");
+    const nCan = document.createElement('canvas');
+    nCan.width = 81;
+    nCan.height = 81;
+
+    const nCtx = nCan.getContext("2d");
+
+    const parentPos = document.querySelector('.card2').getBoundingClientRect();
+    const childPos = document.querySelector('.artwork').getBoundingClientRect();
+    const relativePos = {};
+
+    relativePos.top = childPos.top - parentPos.top;
+    relativePos.right = childPos.right - parentPos.right;
+    relativePos.bottom = childPos.bottom - parentPos.bottom;
+    relativePos.left = childPos.left - parentPos.left;
 
     for (let i = 0; i < promisedGif.length; i++) {
-      nCtx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 0, 0);
-      ctx.putImageData(nCtx.getImageData(0, 0, 24, 24), 36, 0);
-      nCtx.clearRect(0, 0, 24, 24);
-      gif.addFrame(canvas, {delay: 16 * i, copy: true});
+      nCtx.putImageData(new ImageData(promisedGif[i].patch, 81, 81), 0, 0);
+      ctx.putImageData(nCtx.getImageData(0, 0, 81, 81), relativePos.left*devicePixelRatio - 81, relativePos.top*devicePixelRatio - 81);
+      gif.addFrame(canvas, {delay: 60/promisedGif.length * i, copy: true});
+
+      nCtx.clearRect(0, 0, 81, 81);
     }
 
     // document.body.appendChild(canvas);
@@ -133,3 +146,15 @@ export default function EditCard2(node, child) {
 // ctx.putImageData(nCtx.getImageData(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio), 36, 0);
 // gif.addFrame(canvas, {delay: 16 * i, copy: true});
 // nCtx.clearRect(0, 0, logoWidth*devicePixelRatio, logoHeight*devicePixelRatio);
+
+// const removeBlack = function(imageData) {
+//   const data = imageData.data;
+//   for (let i = 0; i < data.length; i += 4) {
+//     const d = data[i]+ data[i + 1] + data[i + 2];
+
+//     if(d < 10){
+//         console.log('making transparent');
+//         data[i + 3] = 0; // alpha
+//     }
+//   }
+// };

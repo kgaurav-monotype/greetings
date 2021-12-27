@@ -8,9 +8,9 @@ export default function Card2({logo, artwork, text, changeText, editUrl, showLog
             <div className="card2">
                 <Link to={editUrl}>
                     <div className="inner">
-                    {showLogo? <img className="logo" src={logo} alt="" />: null}
+                    <img className="logo" src={logo} alt="" />
                         <div className="text">{text}</div>
-                        <img className="artwork" src={artwork} alt="" />
+                        {showLogo? <img className="artwork" src={artwork} alt="" />: null}
                     </div>
                     {
                         changeText && <span className='edit-text'>Customise &nbsp;<Edit/></span>
