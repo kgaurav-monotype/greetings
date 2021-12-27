@@ -60,6 +60,7 @@ export default function EditCard(node, child) {
     const content = document.getElementById('canvas');
     let canvas = await html2canvas(content, {
       backgroundColor: null,
+      scale: 1,
     });
     let dataUrl = canvas.toDataURL();
     let blob = await (await fetch(dataUrl)).blob();
@@ -68,10 +69,8 @@ export default function EditCard(node, child) {
       workers: 4,
       quality: 5
     });
-
+    const ctx = canvas.getContext("2d");
     for (let i = 0; i < promisedGif.length; i++) {
-      const ctx = canvas.getContext("2d");
-
       ctx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 36, 0);
       gif.addFrame(canvas, {delay: 16 * i, copy: true});
     }
