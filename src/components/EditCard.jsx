@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import html2canvas from 'html2canvas';
 import {Link} from "react-router-dom";
-import { parseGIF, decompressFrames } from 'gifuct-js'
+import {decompressFrames, parseGIF} from 'gifuct-js'
 
 import Arrow from './Arrow';
-import logo from '../images/M-26-12-2021.gif';
+import logo from '../images/small-m.gif';
 import artwork from '../images/bg.png';
 
 import Card from './Card';
 
 export default function EditCard(node, child) {
   const [msg, setMsg] = useState("To a Brighter Futura.");
+  const [finalGif, setFinalGif] = useState(null);
 
   const updateMessage = (e) => {
     setMsg(e.target.value);
@@ -20,7 +21,33 @@ export default function EditCard(node, child) {
     e.target.select();
   }
 
-  async function share() {
+  function share() {
+    if (finalGif === null) {
+      return;
+    }
+
+    const filesArray = [
+      // new File([blob], 'greeting.png', {type: 'image/png', lastModified: new Date().getTime()}),
+      new File([finalGif], 'greeting.gif', {type: 'image/gif', lastModified: new Date().getTime()})
+    ];
+
+    if (navigator.canShare && navigator.canShare({files: filesArray})) {
+      navigator.share({
+        files: filesArray,
+        // title: 'Greetings from Monotype',
+        // text: 'Merry Christmas.',
+      })
+        .then(() => console.log('Share was successful.'))
+        .catch((error) => console.log('Sharing failed', error)).finally(() => {
+        setFinalGif(null);
+      });
+    } else {
+      console.log(`Your system doesn't support sharing files.`);
+      setFinalGif(null);
+    }
+  }
+
+  async function prepare() {
     const gifUrl = document.querySelector('.logo').getAttribute('src');
     const promisedGif = await fetch(gifUrl)
       .then(resp => resp.arrayBuffer())
@@ -35,67 +62,52 @@ export default function EditCard(node, child) {
     let blob = await (await fetch(dataUrl)).blob();
 
     const gif = new window.GIF({
-      workers: 1,
+      workers: 4,
       quality: 5
     });
 
     for (let i = 0; i < promisedGif.length; i++) {
       const ctx = canvas.getContext("2d");
 
-      ctx.putImageData(new ImageData(promisedGif[i].patch, 123, 123), 36, 0);
-      gif.addFrame(canvas, { delay: 16*i, copy: true});
+      ctx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 36, 0);
+      gif.addFrame(canvas, {delay: 16 * i, copy: true});
     }
 
-    const finalGif = await new Promise((resolve) => {
-        gif.on('finished', function (b) {
-          // window.open(URL.createObjectURL(b));
-          // return;
+    const valueReturned = await new Promise((resolve) => {
+      gif.on('finished', function (b) {
+        // window.open(URL.createObjectURL(b));
+        // return;
 
-          console.log('finished gif encoding');
-          resolve(b);
-        });
-
-        gif.render();
+        console.log('finished gif encoding');
+        resolve(b);
       });
 
-    const filesArray = [
-      // new File([blob], 'greeting.png', {type: 'image/png', lastModified: new Date().getTime()}),
-      new File([finalGif], 'greeting.gif', {type: 'image/gif', lastModified: new Date().getTime()})
-    ];
+      gif.render();
+    });
 
-    if (navigator.canShare && navigator.canShare({files: filesArray})) {
-      navigator.share({
-        files: filesArray,
-        // title: 'Greetings from Monotype',
-        // text: 'Merry Christmas.',
-      })
-        .then(() => console.log('Share was successful.'))
-        .catch((error) => console.log('Sharing failed', error));
-    } else {
-      console.log(`Your system doesn't support sharing files.`);
-    }
+    setFinalGif(valueReturned);
   }
 
-    return (
-
-<div className="container">
-            <header>
-                <Link to="/card-list"><Arrow /></Link>
-                <div className='page-heading'>
-                    <h2 className="heading-sm">Season’s Greetings</h2>
-                    <p className="desc-sm">Style your message</p>
-                </div>
-            </header>
-            <div id="canvasShown">
-              <Card editUrl="/edit-card" logo={logo} artwork={artwork} text={msg} showLogo={true}/>
-            </div>
-            <div id="canvas" style={{position: "absolute", left:"-1000px", top: "-1000px"}} >
-                <Card editUrl="/edit-card" logo={logo} artwork={artwork} text={msg}  showLogo={false}/>
-            </div>
-            <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage} onClick={selectMessage} value={msg} name="text" aria-label='text'  cols="30" rows="5"></textarea>
-            <button className="btn btn-block" onClick={share}>Send</button>
+  return (
+    <div className="container">
+      <header>
+        <Link to="/card-list"><Arrow/></Link>
+        <div className='page-heading'>
+          <h2 className="heading-sm">Season’s Greetings</h2>
+          <p className="desc-sm">Style your message</p>
         </div>
-    );
+      </header>
+      <div id="canvasShown">
+        <Card editUrl="/edit-card" logo={logo} artwork={artwork} text={msg} showLogo={true}/>
+      </div>
+      <div id="canvas" style={{position: "absolute", left: "-1000px", top: "-1000px"}}>
+        <Card editUrl="/edit-card" logo={logo} artwork={artwork} text={msg} showLogo={false}/>
+      </div>
+      <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage}
+                onClick={selectMessage} value={msg} name="text" aria-label='text' cols="30" rows="5"></textarea>
+      {!finalGif ? <button className="btn btn-block" onClick={prepare}>Prepare</button> : <button className="btn btn-block" onClick={share}>Share</button>}
+    </div>
+  );
 }
 
 // const origImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
