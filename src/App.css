@@ -138,6 +138,7 @@ header {
   line-height: 1.1;
   padding: 35px 80px 250px 80px;
   color: #506AA1;
+  word-break: break-word;
 }
 .artwork {
   position: absolute;
@@ -251,6 +252,7 @@ header {
   padding: 120px 25px 120px 25px;
   color: #FFFFFF;
   text-align: center;
+  word-break: break-word;
 }
 
 .card2 .inner > .logo {
@@ -272,3 +274,14 @@ header {
   transform: translateX(-50%);
 }
 
+.editArea {
+  width: 100%;
+  max-width: 328px;
+  text-align: right;
+  margin-bottom: 18px;
+}
+
+.editArea textarea, #charlimit{
+  color: #414141;
+  font-size: 13px;
+}
