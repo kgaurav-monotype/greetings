@@ -18,8 +18,11 @@ export default function EditCard(node, child) {
   const [charsUsed, setCharsUsed] = useState(false);
 
   const updateMessage = (e) => {
-    if (e.target.value > 60) {
+    if (e.target.value.length > 60) {
       e.target.value = e.target.value.substring(0, 60);
+
+      setMsg(e.target.value);
+      setCharsUsed(e.target.value.length);
 
       return;
     }
