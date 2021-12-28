@@ -33,16 +33,16 @@ export default function EditCard2(node, child) {
       setOrigFontSize(fontSize);
     }
 
-    if (origFontSize && e.target.value.length <= 20) {
+    if (origFontSize && e.target.value.length <= 30) {
       displayText.style.fontSize = origFontSize+'px';
     }
 
-    if (origFontSize && e.target.value.length < 40 && e.target.value.length > 20) {
-      displayText.style.fontSize = origFontSize*0.75+'px';
-    }
+    // if (origFontSize && e.target.value.length < 40 && e.target.value.length > 20) {
+    //   displayText.style.fontSize = origFontSize*0.75+'px';
+    // }
 
-    if (origFontSize && e.target.value.length >= 40) {
-      displayText.style.fontSize = origFontSize*0.5+'px';
+    if (origFontSize && e.target.value.length > 30) {
+      displayText.style.fontSize = origFontSize*0.75+'px';
     }
 
     if (e.target.value.length > 60) {
