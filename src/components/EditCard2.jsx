@@ -71,7 +71,7 @@ export default function EditCard2(node, child) {
     let blob = await (await fetch(dataUrl)).blob();
 
     const gif = new window.GIF({
-      workers: 4,
+      workers: 8,
       quality: 2
     });
     const ctx = canvas.getContext("2d");
@@ -82,17 +82,17 @@ export default function EditCard2(node, child) {
     const nCtx = nCan.getContext("2d");
 
     const parentPos = document.querySelector('.card2').getBoundingClientRect();
-    const childPos = document.querySelector('.artwork').getBoundingClientRect();
+    const child = document.querySelector('.artwork');
     const relativePos = {};
 
-    relativePos.top = childPos.top - parentPos.top;
-    relativePos.right = childPos.right - parentPos.right;
-    relativePos.bottom = childPos.bottom - parentPos.bottom;
-    relativePos.left = childPos.left - parentPos.left;
+    relativePos.left = (parentPos.width/2 + (child.width/2)*3);
+    relativePos.top = (parentPos.height*2 - child.height);
+    // ctx.globalAlpha = 1.0;
 
     for (let i = 0; i < promisedGif.length; i++) {
       nCtx.putImageData(new ImageData(promisedGif[i].patch, 81, 81), 0, 0);
-      ctx.putImageData(nCtx.getImageData(0, 0, 81, 81), relativePos.left*devicePixelRatio - 81, relativePos.top*devicePixelRatio - 81);
+      ctx.putImageData(nCtx.getImageData(0, 0, 81, 81), relativePos.left, relativePos.top);
+      // ctx.drawImage(nCan, 0, 0);
       gif.addFrame(canvas, {delay: 60/promisedGif.length * i, copy: true});
 
       nCtx.clearRect(0, 0, 81, 81);
