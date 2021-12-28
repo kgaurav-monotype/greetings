@@ -15,9 +15,12 @@ export default function EditCard2(node, child) {
   const [finalGif, setFinalGif] = useState(null);
   const [disable, setDisable] = useState(false);
   const [selectedOnce, setSelectedOnce] = useState(false);
+  const [charsUsed, setCharsUsed] = useState(false);
 
   const updateMessage = (e) => {
     setMsg(e.target.value);
+
+    setCharsUsed(e.target.value.length);
   }
 
   const selectMessage = (e) => {
@@ -147,6 +150,7 @@ export default function EditCard2(node, child) {
       <div id="canvas" style={{position: "absolute", left: "-1000px", top: "-1000px"}}>
         <Card2 editUrl="/edit-card2" logo={logo} artwork={artwork} text={msg} showLogo={false}/>
       </div>
+      {charsUsed? <span id="charlimit">{charsUsed} of 60 used</span>: null}
       <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage}
                 onClick={selectMessage} value={msg} name="text" aria-label='text' cols="30" rows="5"></textarea>
       {!finalGif ? <button disabled={disable} className="btn btn-block" onClick={prepare}>Prepare {disable ? <div className="loader"></div> : null}</button> : <button className="btn btn-block" onClick={share}>Share</button>}
