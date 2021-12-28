@@ -16,6 +16,7 @@ export default function EditCard2(node, child) {
   const [disable, setDisable] = useState(false);
   const [selectedOnce, setSelectedOnce] = useState(false);
   const [charsUsed, setCharsUsed] = useState(false);
+  const [shareApiError, setShareApiError] = useState(false);
 
   const updateMessage = (e) => {
     if (e.target.value.length > 60) {
@@ -56,13 +57,16 @@ export default function EditCard2(node, child) {
         files: filesArray,
         // title: 'Greetings from Monotype',
         // text: 'Merry Christmas.',
-      })
-        .then(() => console.log('Share was successful.'))
-        .catch((error) => console.log('Sharing failed', error)).finally(() => {
+      }).then(() => console.log('Share was successful.'))
+        .catch((error) => {
+          console.log('Sharing failed', error);
+          setShareApiError(true);
+        }).finally(() => {
         setFinalGif(null);
       });
     } else {
       console.log(`Your system doesn't support sharing files.`);
+      setShareApiError(true);
       setFinalGif(null);
     }
   }
@@ -89,8 +93,8 @@ export default function EditCard2(node, child) {
     let blob = await (await fetch(dataUrl)).blob();
 
     const gif = new window.GIF({
-      workers: 8,
-      quality: 2
+      workers: 4,
+      quality: 10
     });
     // const ctxHtml = canvasHtml.getContext("2d");
     const canvas = document.createElement('canvas');
@@ -151,6 +155,7 @@ export default function EditCard2(node, child) {
         <div className='page-heading'>
           <h2 className="heading-sm">Season’s Greetings</h2>
           <p className="desc-sm">Style your message</p>
+          <span display={shareApiError}>Share for files not supported</span>
         </div>
       </header>
       <div id="canvasShown">
