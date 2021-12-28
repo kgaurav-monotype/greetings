@@ -63,26 +63,40 @@ export default function EditCard(node, child) {
       .then(gif => decompressFrames(gif, true));
 
     const content = document.getElementById('canvas');
-    let canvas = await html2canvas(content, {
+    let canvasHtml = await html2canvas(content, {
       backgroundColor: null,
       // scale: 2, window.devicePixelRatio
     });
-    let dataUrl = canvas.toDataURL();
+    let dataUrl = canvasHtml.toDataURL();
     let blob = await (await fetch(dataUrl)).blob();
 
     const gif = new window.GIF({
-      workers: 4,
+      workers: 8,
       quality: 2
     });
+    // const ctxHtml = canvasHtml.getContext("2d");
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasHtml.width;
+    canvas.height = canvasHtml.height;
+
     const ctx = canvas.getContext("2d");
-    const nCanvas = document.createElement("canvas");
-    const nCtx = nCanvas.getContext("2d");
+
+    ctx.drawImage(canvasHtml, 0, 0, canvasHtml.width, canvasHtml.height)
+
+    const nCan = document.createElement('canvas');
+    nCan.width = logoWidth;
+    nCan.height = logoHeight;
+
+    const nCtx = nCan.getContext("2d");
 
     for (let i = 0; i < promisedGif.length; i++) {
-      nCtx.putImageData(new ImageData(promisedGif[i].patch, 24, 24), 0, 0);
-      ctx.putImageData(nCtx.getImageData(0, 0, 24, 24), 36, 0);
-      nCtx.clearRect(0, 0, 24, 24);
-      gif.addFrame(canvas, {delay: 16 * i, copy: true});
+      nCtx.putImageData(new ImageData(promisedGif[i].patch, logoWidth, logoHeight), 0, 0);
+      // ctx.putImageData(nCtx.getImageData(0, 0, 81, 81), relativePos.left, relativePos.top);
+      ctx.drawImage(canvasHtml, 0, 0);
+      ctx.drawImage(nCan, 0, 0, logoWidth, logoHeight, 18*devicePixelRatio, 0, 24*devicePixelRatio, 24*devicePixelRatio);
+      gif.addFrame(canvas, {delay: 60/promisedGif.length * i, copy: true});
+
+      nCtx.clearRect(0, 0, logoWidth, logoHeight);
     }
 
     // document.body.appendChild(canvas);

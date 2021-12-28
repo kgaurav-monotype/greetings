@@ -63,18 +63,26 @@ export default function EditCard2(node, child) {
       .then(gif => decompressFrames(gif, true));
 
     const content = document.getElementById('canvas');
-    let canvas = await html2canvas(content, {
+    let canvasHtml = await html2canvas(content, {
       backgroundColor: null,
       // scale: 2, window.devicePixelRatio
     });
-    let dataUrl = canvas.toDataURL();
+    let dataUrl = canvasHtml.toDataURL();
     let blob = await (await fetch(dataUrl)).blob();
 
     const gif = new window.GIF({
       workers: 8,
       quality: 2
     });
+    // const ctxHtml = canvasHtml.getContext("2d");
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasHtml.width;
+    canvas.height = canvasHtml.height;
+
     const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(canvasHtml, 0, 0, canvasHtml.width, canvasHtml.height)
+
     const nCan = document.createElement('canvas');
     nCan.width = 81;
     nCan.height = 81;
@@ -85,15 +93,16 @@ export default function EditCard2(node, child) {
     const child = document.querySelector('.artwork');
     const relativePos = {};
 
-    relativePos.left = (devicePixelRatio*parentPos.width/2 - (child.width)/2);
+    relativePos.left = (devicePixelRatio*parentPos.width/2 - child.width);
     // relativePos.left = (devicePixelRatio*parentPos.width/2);
-    relativePos.top = (parentPos.height*devicePixelRatio - child.height);
+    relativePos.top = (parentPos.height*devicePixelRatio - child.height*devicePixelRatio);
     // ctx.globalAlpha = 1.0;
 
     for (let i = 0; i < promisedGif.length; i++) {
       nCtx.putImageData(new ImageData(promisedGif[i].patch, 81, 81), 0, 0);
-      ctx.putImageData(nCtx.getImageData(0, 0, 81, 81), relativePos.left, relativePos.top);
-      // ctx.drawImage(nCan, 0, 0);
+      // ctx.putImageData(nCtx.getImageData(0, 0, 81, 81), relativePos.left, relativePos.top);
+      ctx.drawImage(canvasHtml, 0, 0);
+      ctx.drawImage(nCan, 0, 0, 81, 81, relativePos.left, relativePos.top, 81*devicePixelRatio, 81*devicePixelRatio);
       gif.addFrame(canvas, {delay: 60/promisedGif.length * i, copy: true});
 
       nCtx.clearRect(0, 0, 81, 81);
