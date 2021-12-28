@@ -19,6 +19,10 @@ export default function EditCard2(node, child) {
   const [shareApiError, setShareApiError] = useState(false);
 
   const updateMessage = (e) => {
+    if (finalGif) {
+      setFinalGif(null);
+    }
+
     if (e.target.value.length > 60) {
       e.target.value = e.target.value.substring(0, 60);
 
@@ -61,9 +65,7 @@ export default function EditCard2(node, child) {
         .catch((error) => {
           console.log('Sharing failed', error);
           setShareApiError(true);
-        }).finally(() => {
-        setFinalGif(null);
-      });
+        });
     } else {
       console.log(`Your system doesn't support sharing files.`);
       setShareApiError(true);
@@ -155,7 +157,7 @@ export default function EditCard2(node, child) {
         <div className='page-heading'>
           <h2 className="heading-sm">Season’s Greetings</h2>
           <p className="desc-sm">Style your message</p>
-          <span display={shareApiError}>Share for files not supported</span>
+          <span style={{display: shareApiError ? 'block' : 'none' }}>Sharing not supported on your browser. Please update to the latest version</span>
         </div>
       </header>
       <div id="canvasShown">
@@ -164,7 +166,7 @@ export default function EditCard2(node, child) {
       <div id="canvas" style={{position: "absolute", left: "-1000px", top: "-1000px"}}>
         <Card2 editUrl="/edit-card2" logo={logo} artwork={artwork} text={msg} showLogo={false}/>
       </div>
-      <div class="editArea">
+      <div className="editArea">
       <textarea autoFocus={true} maxLength="60" className='text-box' type="text" onChange={updateMessage} onBlur={updateMessage}
                 onClick={selectMessage} value={msg} name="text" aria-label='text' cols="30" rows="5"></textarea>
 
