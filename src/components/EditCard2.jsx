@@ -81,8 +81,8 @@ export default function EditCard2(node, child) {
     if (navigator.canShare && navigator.canShare({files: filesArray})) {
       navigator.share({
         files: filesArray,
-        // title: 'Greetings from Monotype',
-        // text: 'Merry Christmas.',
+        title: 'Greetings from Monotype',
+        text: 'Share joy via https://greetings-m.web.app/',
       }).then(() => console.log('Share was successful.'))
         .catch((error) => {
           console.log('Sharing failed', error);
