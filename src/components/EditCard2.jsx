@@ -85,8 +85,9 @@ export default function EditCard2(node, child) {
     const child = document.querySelector('.artwork');
     const relativePos = {};
 
-    relativePos.left = (parentPos.width/2 + (child.width/2)*3);
-    relativePos.top = (parentPos.height*2 - child.height);
+    relativePos.left = (devicePixelRatio*parentPos.width/2 - (child.width)/2);
+    // relativePos.left = (devicePixelRatio*parentPos.width/2);
+    relativePos.top = (parentPos.height*devicePixelRatio - child.height);
     // ctx.globalAlpha = 1.0;
 
     for (let i = 0; i < promisedGif.length; i++) {
