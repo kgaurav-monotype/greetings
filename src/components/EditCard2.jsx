@@ -17,10 +17,32 @@ export default function EditCard2(node, child) {
   const [selectedOnce, setSelectedOnce] = useState(false);
   const [charsUsed, setCharsUsed] = useState(false);
   const [shareApiError, setShareApiError] = useState(false);
+  const [origFontSize, setOrigFontSize] = useState(null);
 
   const updateMessage = (e) => {
+    const displayText = document.querySelector('#canvasShown div.text')
+
     if (finalGif) {
       setFinalGif(null);
+    }
+
+    if (origFontSize === null) {
+      const style = window.getComputedStyle(displayText, null).getPropertyValue('font-size');
+      const fontSize = parseFloat(style);
+
+      setOrigFontSize(fontSize);
+    }
+
+    if (origFontSize && e.target.value.length <= 20) {
+      displayText.style.fontSize = origFontSize+'px';
+    }
+
+    if (origFontSize && e.target.value.length < 40 && e.target.value.length > 20) {
+      displayText.style.fontSize = origFontSize*0.75+'px';
+    }
+
+    if (origFontSize && e.target.value.length >= 40) {
+      displayText.style.fontSize = origFontSize*0.5+'px';
     }
 
     if (e.target.value.length > 60) {
