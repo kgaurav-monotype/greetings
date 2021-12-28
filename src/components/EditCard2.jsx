@@ -14,12 +14,18 @@ export default function EditCard2(node, child) {
   const [msg, setMsg] = useState("Stay Home and enjoy Christmas");
   const [finalGif, setFinalGif] = useState(null);
   const [disable, setDisable] = useState(false);
+  const [selectedOnce, setSelectedOnce] = useState(false);
 
   const updateMessage = (e) => {
     setMsg(e.target.value);
   }
 
   const selectMessage = (e) => {
+    if (selectedOnce) {
+      return;
+    }
+
+    setSelectedOnce(true);
     e.target.select();
   }
 

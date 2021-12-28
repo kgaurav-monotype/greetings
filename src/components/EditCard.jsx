@@ -14,12 +14,19 @@ export default function EditCard(node, child) {
   const [msg, setMsg] = useState("To a Brighter Futura.");
   const [finalGif, setFinalGif] = useState(null);
   const [disable, setDisable] = useState(false);
+  const [selectedOnce, setSelectedOnce] = useState(false);
+
 
   const updateMessage = (e) => {
     setMsg(e.target.value);
   }
 
   const selectMessage = (e) => {
+    if (selectedOnce) {
+      return;
+    }
+
+    setSelectedOnce(true);
     e.target.select();
   }
 
